@@ -1,0 +1,9 @@
+prometheus:
+  prometheusSpec:
+    serviceMonitorSelectorNilUsesHelmValues: false # default is true. If true, it will only use servicemonSelector from helm values.
+    serviceMonitorSelector: {} # default is {}
+    serviceMonitorNamespaceSelector: {} # default is {}
+    ruleSelectorNilUsesHelmValues: true # if true, it will only use ruleSelector (i.e the "release" label), unless you choose to add selectors yourself (see below)
+    ruleSelector: # default is {}
+      matchLabel:
+        prometheus.custom.rule: true

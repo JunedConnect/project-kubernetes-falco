@@ -1,0 +1,145 @@
+
+
+metrics:
+  enabled: true
+  interval: 15s
+  outputRule: false
+  ruleCountersEnabled: true
+  resourceUtilizationEnabled: true
+  stateCountersEnabled: true
+  kernelEventCountersEnabled: true
+  libbpfStatsEnabled: true
+  pluginsMetricsEnabled: true
+  jemallocStatsEnabled: false
+  convertMemoryToMB: true
+  includeEmptyValues: false
+  kernelEventCountersPerCPUEnabled: false
+  service:
+    create: true
+    type: ClusterIP
+    labels: {}
+    annotations: {}
+    ports:
+      metrics:
+        port: 8765
+        targetPort: 8765
+        protocol: "TCP"
+        ipFamilyPolicy: ""
+        ipFamilies: []
+
+
+serviceMonitor:
+  create: true # default is false
+  path: /metrics
+  labels: {}
+  selector: {}
+  interval: 15s
+  scheme: http
+  tlsConfig: {}
+  scrapeTimeout: 10s
+  relabelings: []
+  targetLabels: []
+  endpointPort: "metrics"
+
+grafana:
+  dashboards:
+    enabled: true
+    configMaps:
+      falco:
+        name: falco-grafana-dashboard
+        namespace: ""
+        folder: ""
+
+
+falco:
+ webserver:
+    enabled: true
+    threadiness: 0
+    listen_port: 8765
+    listen_address: 0.0.0.0
+    k8s_healthz_endpoint: /healthz
+    prometheus_metrics_enabled: true # default is false
+    ssl_enabled: false
+    ssl_certificate: /etc/falco/falco.pem
+
+
+# depenedency charts below
+
+# k8s-metacollector
+collectors:
+  enabled: true
+  kubernetes:
+    enabled: true # default is false
+
+k8s-metacollector:
+  grafana:
+    dashboards:
+      enabled: true
+      configMaps:
+        k8s-metacollector:
+          name: k8s-metacollector-grafana-dashboard
+          namespace: ""
+          folder: ""
+  replicaCount: 1
+  service:
+    create: true
+    ports:
+      metrics:
+        port: 8080
+        targetPort: metrics
+        protocol: "TCP"
+    type: ClusterIP
+  serviceMonitor:
+    create: true # default is false
+    interval: 15s
+    labels: {}
+    path: /metrics
+    scrapeTimeout: 10s
+    targetLabels: []
+    tlsConfig: {}
+
+# falcosidekick
+falcosidekick:
+  enabled: true
+  serviceMonitor:
+    additionalLabels: {}
+    additionalProperties: {}
+    enabled: true
+    interval: ""
+    scrapeTimeout: ""
+  webui:
+    enabled: true
+    loglevel: debug # default is info
+    replicaCount: 2
+    service:
+      annotations: {}
+      nodePort: 30282
+      port: 2802
+      targetPort: 2802
+      type: ClusterIP
+  prometheus:
+    extralabels: # default is ""
+      prometheus.custom.rule: true
+  prometheusRules:
+    enabled: true
+    alerts:
+      alert:
+        enabled: true
+      critical:
+        enabled: true
+      emergency:
+        enabled: true
+      error:
+        enabled: true
+      output:
+        enabled: true
+      warning:
+        enabled: true
+  grafana:
+    dashboards:
+      enabled: true
+      configMaps:
+        falcosidekick:
+          name: falcosidekick-grafana-dashboard
+          namespace: ""
+          folder: ""

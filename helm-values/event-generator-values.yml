@@ -1,0 +1,8 @@
+config:
+  actions: "" # default is "^syscall"
+  commands: "run"
+  grcp:
+    bindAddress: "unix:///run/falco/falco.sock"
+    enabled: false
+  loop: false # default is true
+  sleep: ""
