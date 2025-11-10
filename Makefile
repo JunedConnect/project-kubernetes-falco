@@ -75,9 +75,6 @@ upgrade-falco:
 	@echo "\n All upgrades complete!"
 
 destroy:
-	@echo "🛑 Stopping any running port-forwards..."
-	@pkill -f "kubectl port-forward" || true
-
 	@echo "Cleaning up Helm releases..."
 	helm uninstall falco -n falco || true
 	helm uninstall prom-graf -n monitor || true
