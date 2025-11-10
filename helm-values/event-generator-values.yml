@@ -4,5 +4,5 @@ config:
   grcp:
     bindAddress: "unix:///run/falco/falco.sock"
     enabled: false
-  loop: false # default is true
-  sleep: ""
+  loop: true # default is true
+  sleep: "" # default is ""
