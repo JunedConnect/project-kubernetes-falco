@@ -1,13 +1,15 @@
 # Falco Eye
 
-<div align="center">
-  <img src="https://raw.githubusercontent.com/JunedConnect/project-kubernetes-falco/main/images/falco-logo.png" width="300" alt="Falco Logo">
-</div>
-
 
 The project demonstrates a **runtime security monitoring setup** using **Falco** for Kubernetes real-time threat detection, integrated with **Prometheus** and **Grafana** for observability and alerting. This setup provides real-time security event detection, metrics collection, and alerting capabilities for your Kubernetes cluster.
 
 This architecture leverages **Falco's kernel-level monitoring** to detect suspicious activities, with **Falcosidekick** routing security events, **Prometheus** collecting metrics, and **Alertmanager** sending notifications to external systems like Slack.
+
+<br>
+
+<div align="center">
+  <img src="https://raw.githubusercontent.com/JunedConnect/project-kubernetes-falco/main/images/falco-logo.png" width="300" alt="Falco Logo">
+</div>
 
 <br>
 
