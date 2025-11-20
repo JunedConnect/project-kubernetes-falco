@@ -2,6 +2,11 @@
 
 PORT_FORWARD_PIDS := .portforward_pids
 
+PROM_STACK_VER = 79.1.1
+FALCO_VER = 7.0.0
+EVENT_GEN_VER = 0.3.4
+
+
 help:
 	@echo "Available commands:"
 	@echo "  make setup                   	- Create Kind cluster and install Prometheus and Falco"
@@ -21,21 +26,25 @@ setup:
 	@echo "\n Adding Helm repositories..."
 	helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
 	helm repo add falcosecurity https://falcosecurity.github.io/charts
+	helm repo add 
 	
 	@echo "\n Installing Prometheus Stack..."
 	helm install prom-graf prometheus-community/kube-prometheus-stack \
+	    --version $(PROM_STACK_VER) \
 		--namespace monitor \
 		--create-namespace \
 		--values helm-values/prom-graf-values.yml
 	
 	@echo "\n Installing Falco..."
 	helm install falco falcosecurity/falco \
+		--version $(FALCO_VER) \
 		--namespace falco \
 		--create-namespace \
 		--values helm-values/falco-values.yml
 
 	@echo "\n Event Generator..."
 	helm install event-generator falcosecurity/event-generator \
+	    --version $(EVENT_GEN_VER) \
 		--namespace falco \
 		--create-namespace \
 		--values helm-values/event-generator-values.yml
@@ -78,17 +87,22 @@ stop-portforward:
 upgrade-prometheus-stack:
 	@echo "\n Upgrading Prometheus Stack..."
 	helm upgrade prom-graf prometheus-community/kube-prometheus-stack \
+		--version $(PROM_STACK_VER) \
 		--namespace monitor \
 		--values helm-values/prom-graf-values.yml
+	
+	@echo "\n All upgrades complete!"
 
 upgrade-falco:	
 	@echo "\n Upgrading Falco..."
 	helm upgrade falco falcosecurity/falco \
+	    --version $(FALCO_VER) \
 		--namespace falco \
 		--values helm-values/falco-values.yml
 
 	@echo "\n Upgrading Event Generator..."
 	helm upgrade event-generator falcosecurity/event-generator \
+	    --version $(EVENT_GEN_VER) \
 		--namespace falco \
 		--values helm-values/event-generator-values.yml
 	
