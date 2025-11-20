@@ -126,7 +126,7 @@ falcosidekick:
   prometheusRules:
     # additionalLabels: # this is not needed as I set Prometheus to select all PrometheusRules in the cluster
     #   prometheus.custom.rule: "true"
-    enabled: true
+    enabled: true # disable this if you have falcosidekick configured to send alerts directly to alertmanager
     alerts:
       alert:
         enabled: true
