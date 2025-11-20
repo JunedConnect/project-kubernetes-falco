@@ -98,7 +98,11 @@ falcosidekick:
     enabled: false  # Disable PrometheusRules to avoid duplicate alerts
 ```
 
-Then upgrade: `make upgrade-falco`
+Then upgrade:
+   ```bash
+   make upgrade-falco
+   ```
+
 
 ### Accessing Services
 
